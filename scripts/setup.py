@@ -810,17 +810,13 @@ def console_assistant():
     """)
     install_dir = os.path.split(os.path.abspath(__file__))[0]
 
-
-    #try to read configuration
     config = configuration.Configuration(constants.CONFIGURATION_FILE)
 
-
-
-    config.enable_email = ask_boolean("Do you want the 'send photo by email' feature?",config.enable_email)
+    config.enable_email = ask_boolean("Do you want the 'send photo by email' feature?", config.enable_email)
     print("")
-    config.enable_upload = ask_boolean("Do you want the 'auto-upload photos' feature?",config.enable_upload)
+    config.enable_upload = ask_boolean("Do you want the 'auto-upload photos' feature?", config.enable_upload)
     print("")
-    config.enable_effects = ask_boolean("Do you want the 'Photos effects' feature?",config.enable_effects)
+    config.enable_effects = ask_boolean("Do you want the 'Photos effects' feature?", config.enable_effects)
     print("")
     if printer_selection_enable == True:
         config.enable_print = ask_boolean("Do you want the 'Send photo to printer' feature?", config.enable_print)
@@ -832,35 +828,34 @@ def console_assistant():
             selectedindex = 0
             for printer in printers:
                 if config.selected_printer == str(index):
-                    print('[*] ['+str(index)+'] '+printer)
+                    print('[*] [' + str(index) + '] ' + printer)
                     selectedindex = index
                 else:
-                    print('[ ] ['+str(index)+'] '+printer)
+                    print('[ ] [' + str(index) + '] ' + printer)
                 index = index + 1
-            config.selected_printer = input("Seleted printer: [%s] confirm or change =>" % config.selected_printer)
-            if config.selected_printer == "": config.selected_printer = selectedindex
+            config.selected_printer = input("Selected printer: [%s] confirm or change =>" % config.selected_printer)
+            if config.selected_printer == "":
+                config.selected_printer = selectedindex
 
-    want_email  = config.enable_email
+    want_email = config.enable_email
     want_upload = config.enable_upload
     want_print = config.enable_print
     selected_printer = config.selected_printer
     need_credentials = want_email or want_upload
 
-    # We only need a user name if we need credentials
     if config.user_name is None:
         config.user_name = "foo@gmail.com"
     config.write()
+    service = None  # Initialize the service variable
     if need_credentials:
-        # Check for user account
         _username = input("Google account: [%s] confirm or change => " % config.user_name)
         if _username != "":
             config.user_name = _username.strip()
             config.write()
-        # Check for credentials
-        app_id     = os.path.join(install_dir,constants.APP_ID_FILE)
+        app_id = os.path.join(install_dir, constants.APP_ID_FILE)
 
         if os.path.exists(app_id):
-            print("\n** found %s application file, will use it (remove in case of problems)"%constants.APP_ID_FILE)
+            print("\n** found %s application file, will use it (remove in case of problems)" % constants.APP_ID_FILE)
         else:
             print("""
     ________________________________________________________________
@@ -889,28 +884,26 @@ def console_assistant():
 
     The installation program will now exit.
     Run it again once this is done
-    """%(app_id))
+    """ % (app_id))
             sys.exit()
 
-        # We do have the client_id !
-
-        cred_store = os.path.join(install_dir,constants.CREDENTIALS_STORE_FILE)
+        cred_store = os.path.join(install_dir, constants.CREDENTIALS_STORE_FILE)
         if os.path.exists(cred_store):
-            print("\n** Found %s credential store"%constants.CREDENTIALS_STORE_FILE)
-            remove_file = to_boolean(input("If you have troubles connecting you may want to remove this file\nRemove ? [N/y] => "),False)
+            print("\n** Found %s credential store" % constants.CREDENTIALS_STORE_FILE)
+            remove_file = to_boolean(input("If you have troubles connecting you may want to remove this file\nRemove ? [N/y] => "), False)
             if remove_file:
                 try:
                     os.remove(cred_store)
                 except:
                     import traceback
                     traceback.print_exc()
-                    print("\n==> Problem removing %s file, please do it on your side and run this assistant again\n"%cred_store)
+                    print("\n==> Problem removing %s file, please do it on your side and run this assistant again\n" % cred_store)
                     sys.exit()
 
-        # prepare the validation callback in case of missing or invalid credential store
         import webbrowser
+
         def auth_callback(authorization_uri):
-            print("\n%s file is missing or invalid"%cred_store)
+            print("\n%s file is missing or invalid" % cred_store)
             print("""
     _________________________________________________________________
 
@@ -924,12 +917,11 @@ def console_assistant():
             mycode = input('\n[validation code]: ').strip()
             return mycode
 
-
         import oauth2services
         try:
             print("\n** Connecting...")
-            service = oauth2services.OAuthServices(app_id,cred_store,config.user_name)
-            connected = service.refresh() # will call 'auth_callback' if needed
+            service = oauth2services.OAuthServices(app_id, cred_store, config.user_name)
+            connected = service.refresh()
             print("... Done")
         except Exception as error:
             print(error)
@@ -942,10 +934,8 @@ def console_assistant():
             print("Exiting...")
             sys.exit()
 
-
-       
         if config.albumID != None:
-            keep_album = to_boolean(input("Photo Album is configured (%s), do you want to keep it? [Y/n] => "%config.album_name))
+            keep_album = to_boolean(input("Photo Album is configured (%s), do you want to keep it? [Y/n] => " % config.album_name))
             change_album_id = not keep_album
         else:
             print("\nNo photo album selected, images will be uploaded to\nGoogle Photo Library (No Album)")
@@ -953,22 +943,22 @@ def console_assistant():
 
         if change_album_id:
             try:
-                print("\nDownloading %s albums list..."% config.user_name)
+                print("\nDownloading %s albums list..." % config.user_name)
                 albums = service.get_user_albums()
-                print("... %d albums found"%(len(albums)))
-                candidates    = []
+                print("... %d albums found" % (len(albums)))
+                candidates = []
                 candidates_id = []
                 album_title = None
-                album_id    = None
+                album_id = None
                 while True:
                     search_string = input("Type a part of an existing album name (or return for all): ")
                     search_string = search_string.lower()
-                    candidates    = ["<No Album>","<Create New>"]
-                    candidates_id = ["","<New>"]
+                    candidates = ["<No Album>", "<Create New>"]
+                    candidates_id = ["", "<New>"]
                     for album in albums:
                         title = album['title']
                         title_ = title.lower()
-                        id    = album['id']
+                        id = album['id']
                         if title_.find(search_string) != -1:
                             candidates.append(title)
                             candidates_id.append(id)
@@ -978,7 +968,7 @@ def console_assistant():
                         break
                 print("Here's the album that match:")
                 for i, title in enumerate(candidates):
-                    print("[%3d] %s"%(i,title))
+                    print("[%3d] %s" % (i, title))
 
                 while True:
                     album_num = input("Type album number => ")
@@ -991,44 +981,39 @@ def console_assistant():
                 if album_id == "":
                     config.albumID = None
                 elif album_id == "<New>":
-                    config.albumID = service.create_album(album_name = "TouchSelfie", add_placeholder_picture = True)
+                    config.albumID = service.create_album(album_name="TouchSelfie", add_placeholder_picture=True)
                     album_title = "TouchSelfie"
                 else:
                     config.albumID = album_id
                 config.album_name = album_title
                 config.write()
-                print("\nAlbum '%s' with id '%s' successfully selected!\n"%(album_title, album_id))
+                print("\nAlbum '%s' with id '%s' successfully selected!\n" % (album_title, album_id))
             except:
                 import traceback
                 traceback.print_exc()
                 print("\n==> Error while fetching user albums, try to re-authenticate the application :(")
 
-
-    # Optional tests for connection
     if config.enable_email:
-        config.enable_email_logging = ask_boolean("Do you want to log outgoing email addresses?",config.enable_email_logging)
+        config.enable_email_logging = ask_boolean("Do you want to log outgoing email addresses?", config.enable_email_logging)
         config.write()
-        test_email = to_boolean(input("Do you want to test email sending? [N/y] => "),False)
+        test_email = to_boolean(input("Do you want to test email sending? [N/y] => "), False)
 
     if config.enable_upload:
-        test_upload = to_boolean(input("Do you want to test image upload? [N/y] => "),False)
+        test_upload = to_boolean(input("Do you want to test image upload? [N/y] => "), False)
 
     test_connection(service, config, test_email, test_upload)
 
-    #finally create a personalized script to run the photobooth
-    script_name = os.path.join(os.path.abspath(".."),"photobooth.sh")
-    script = open(script_name,"w")
+    script_name = os.path.join(os.path.abspath(".."), "photobooth.sh")
+    script = open(script_name, "w")
     script.write("#!/bin/sh\n")
-    script.write("cd %s\n"% install_dir)
-    script.write("python user_interface.py $* > %s\n"%(os.path.join(install_dir,"..","photobooth.log")))
+    script.write("cd %s\n" % install_dir)
+    script.write("python user_interface.py $* > %s\n" % (os.path.join(install_dir, "..", "photobooth.log")))
     script.close()
-    #make the script executable
     import stat
     st = os.stat(script_name)
     os.chmod(script_name, st.st_mode | stat.S_IEXEC)
 
     print("""
-
     ________________________________________________________________
 
     We're all set, I just created a script to launch TouchSelfie with
@@ -1036,7 +1021,8 @@ def console_assistant():
     => %s
     You can tune configuration parameters in scripts/%s
     You can adapt your hardware configuration in scripts/constants.py
-    """% (script_name, constants.CONFIGURATION_FILE))
+    """ % (script_name, constants.CONFIGURATION_FILE))
+
 
 
 def to_boolean(answer, default=True):
