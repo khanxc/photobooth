@@ -837,7 +837,7 @@ def console_assistant():
                 else:
                     print('[ ] ['+str(index)+'] '+printer)
                 index = index + 1
-            config.selected_printer = raw_input("Seleted printer: [%s] confirm or change =>" % config.selected_printer)
+            config.selected_printer = input("Seleted printer: [%s] confirm or change =>" % config.selected_printer)
             if config.selected_printer == "": config.selected_printer = selectedindex
 
     want_email  = config.enable_email
@@ -852,7 +852,7 @@ def console_assistant():
     config.write()
     if need_credentials:
         # Check for user account
-        _username = raw_input("Google account: [%s] confirm or change => " % config.user_name)
+        _username = input("Google account: [%s] confirm or change => " % config.user_name)
         if _username != "":
             config.user_name = _username.strip()
             config.write()
@@ -897,7 +897,7 @@ def console_assistant():
         cred_store = os.path.join(install_dir,constants.CREDENTIALS_STORE_FILE)
         if os.path.exists(cred_store):
             print("\n** Found %s credential store"%constants.CREDENTIALS_STORE_FILE)
-            remove_file = to_boolean(raw_input("If you have troubles connecting you may want to remove this file\nRemove ? [N/y] => "),False)
+            remove_file = to_boolean(input("If you have troubles connecting you may want to remove this file\nRemove ? [N/y] => "),False)
             if remove_file:
                 try:
                     os.remove(cred_store)
@@ -919,9 +919,9 @@ def console_assistant():
     Once this is done, you will get a validation key that you must
     paste below
     _________________________________________________________________""")
-            raw_input("Press a key when ready...")
+            input("Press a key when ready...")
             webbrowser.open(authorization_uri)
-            mycode = raw_input('\n[validation code]: ').strip()
+            mycode = input('\n[validation code]: ').strip()
             return mycode
 
 
@@ -945,11 +945,11 @@ def console_assistant():
 
        
         if config.albumID != None:
-            keep_album = to_boolean(raw_input("Photo Album is configured (%s), do you want to keep it? [Y/n] => "%config.album_name))
+            keep_album = to_boolean(input("Photo Album is configured (%s), do you want to keep it? [Y/n] => "%config.album_name))
             change_album_id = not keep_album
         else:
             print("\nNo photo album selected, images will be uploaded to\nGoogle Photo Library (No Album)")
-            change_album_id = to_boolean(raw_input("\nDo you want to select another album for upload? [N/y] => "))
+            change_album_id = to_boolean(input("\nDo you want to select another album for upload? [N/y] => "))
 
         if change_album_id:
             try:
@@ -961,7 +961,7 @@ def console_assistant():
                 album_title = None
                 album_id    = None
                 while True:
-                    search_string = raw_input("Type a part of an existing album name (or return for all): ")
+                    search_string = input("Type a part of an existing album name (or return for all): ")
                     search_string = search_string.lower()
                     candidates    = ["<No Album>","<Create New>"]
                     candidates_id = ["","<New>"]
@@ -981,7 +981,7 @@ def console_assistant():
                     print("[%3d] %s"%(i,title))
 
                 while True:
-                    album_num = raw_input("Type album number => ")
+                    album_num = input("Type album number => ")
                     try:
                         album_title = candidates[int(album_num)]
                         album_id = candidates_id[int(album_num)]
@@ -1008,10 +1008,10 @@ def console_assistant():
     if config.enable_email:
         config.enable_email_logging = ask_boolean("Do you want to log outgoing email addresses?",config.enable_email_logging)
         config.write()
-        test_email = to_boolean(raw_input("Do you want to test email sending? [N/y] => "),False)
+        test_email = to_boolean(input("Do you want to test email sending? [N/y] => "),False)
 
     if config.enable_upload:
-        test_upload = to_boolean(raw_input("Do you want to test image upload? [N/y] => "),False)
+        test_upload = to_boolean(input("Do you want to test image upload? [N/y] => "),False)
 
     test_connection(service, config, test_email, test_upload)
 
@@ -1057,7 +1057,7 @@ def ask_boolean(prompt, current_value):
         choice = "[Y/n]"
     else:
         choice = "[N/y]"
-    return to_boolean(raw_input("%s %s => "%(prompt,choice)),current_value)
+    return to_boolean(input("%s %s => "%(prompt,choice)),current_value)
 
 def test_connection(service,config,test_email,test_upload):
     """Tests email sending and/or image uploading"""
