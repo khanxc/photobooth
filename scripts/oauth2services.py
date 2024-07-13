@@ -8,7 +8,7 @@
 """
 import os
 import base64
-from apiclient import errors, discovery
+from googleapiclient import errors, discovery
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import mimetypes
