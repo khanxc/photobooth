@@ -52,7 +52,7 @@
 import logging
 log=logging.getLogger(__name__)
 
-from Tkinter import *
+from tkinter import *
 
 class Key:
     """Implements common behavior for a Keyboard Key"""
