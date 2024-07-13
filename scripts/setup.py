@@ -578,7 +578,7 @@ Click the Start button below:
         try:
 
             self.google_service = oauth2services.OAuthServices(constants.APP_ID_FILE,constants.CREDENTIALS_STORE_FILE,self.user_mail_var.get() )
-            print self.google_service.refresh()
+            print(self.google_service.refresh())
         except Exception as error:
             self.google_service = None
             print error
