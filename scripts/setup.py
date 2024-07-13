@@ -1027,7 +1027,7 @@ def console_assistant():
     st = os.stat(script_name)
     os.chmod(script_name, st.st_mode | stat.S_IEXEC)
 
-    print(""")
+    print("""
 
     ________________________________________________________________
 
@@ -1036,7 +1036,7 @@ def console_assistant():
     => %s
     You can tune configuration parameters in scripts/%s
     You can adapt your hardware configuration in scripts/constants.py
-    """% (script_name, constants.CONFIGURATION_FILE)
+    """% (script_name, constants.CONFIGURATION_FILE))
 
 
 def to_boolean(answer, default=True):
