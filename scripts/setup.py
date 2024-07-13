@@ -24,7 +24,7 @@ VALID_ICON_FILE = os.path.join("ressources","ic_valid.png")
 INVALID_ICON_FILE = os.path.join("ressources","ic_invalid.png")
 from PIL import Image as _Image
 from PIL import ImageTk as _ImageTk
-from Tkinter import *
+from tkinter import *
 import tkFileDialog
 import tkMessageBox
 import oauth2services
