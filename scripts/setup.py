@@ -17,7 +17,7 @@ try:
     import cups
     printer_selection_enable = True
 except ImportError:
-    print "Cups not installed. removing option"
+    print("Cups not installed. removing option")
     printer_selection_enable = False
 
 VALID_ICON_FILE = os.path.join("ressources","ic_valid.png")
