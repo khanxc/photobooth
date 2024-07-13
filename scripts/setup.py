@@ -581,7 +581,7 @@ Click the Start button below:
             print(self.google_service.refresh())
         except Exception as error:
             self.google_service = None
-            print error
+            print(error)
             import traceback
             traceback.print_exc()
         self.__check_credentials_files()
@@ -623,7 +623,7 @@ Click the Start button below:
                 self.google_service = oauth2services.OAuthServices(constants.APP_ID_FILE,constants.CREDENTIALS_STORE_FILE,self.user_mail_var.get())
                 return self.google_service.refresh()
             except Exception as error:
-#                print error
+#                print(error)
 #                import traceback
 #                traceback.print_exc()
                 #We failed to connect
@@ -932,7 +932,7 @@ def console_assistant():
             connected = service.refresh() # will call 'auth_callback' if needed
             print("... Done")
         except Exception as error:
-            print error
+            print(error)
             print("\n==> Connection failed :(")
             sys.exit()
 
@@ -1091,7 +1091,7 @@ if __name__ == '__main__':
         try:
             graphical_assistant()
         except Exception as error:
-            print error
+            print(error)
             #import traceback
             #traceback.print_exc()
             import time
