@@ -832,10 +832,10 @@ def console_assistant():
             selectedindex = 0
             for printer in printers:
                 if config.selected_printer == str(index):
-                    print '[*] ['+str(index)+'] '+printer
+                    print('[*] ['+str(index)+'] '+printer)
                     selectedindex = index
                 else:
-                    print '[ ] ['+str(index)+'] '+printer
+                    print('[ ] ['+str(index)+'] '+printer)
                 index = index + 1
             config.selected_printer = raw_input("Seleted printer: [%s] confirm or change =>" % config.selected_printer)
             if config.selected_printer == "": config.selected_printer = selectedindex
