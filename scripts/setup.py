@@ -25,8 +25,8 @@ INVALID_ICON_FILE = os.path.join("ressources","ic_invalid.png")
 from PIL import Image as _Image
 from PIL import ImageTk as _ImageTk
 from tkinter import *
-import tkFileDialog
-import tkMessageBox
+import tkinter.filedialog as tkFileDialog
+import tkinter.messagebox as tkMessageBox
 import oauth2services
 
 #URL of the Google console developer assistant to create App_id file
