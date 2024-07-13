@@ -130,7 +130,7 @@ class Assistant(Tk):
                 self.want_printer_val = int(printer_selected.curselection()[0])
                 self.config.selected_printer = self.want_printer_val
                 #value = self.want_printer_val.get(index)
-                print 'You selected item %d: ' % (self.want_printer_val)
+                print('You selected item %d: ' % (self.want_printer_val))
 
 
             #checkbutton to choose to use soft keyboard
