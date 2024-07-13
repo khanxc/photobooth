@@ -381,7 +381,7 @@ def test():
 
 
     print("\nTesting email sending...")
-    print gservice.send_message(username,"oauth2 message sending works!","Here's the Message body",attachment_file="test_image.png")
+    print(gservice.send_message(username,"oauth2 message sending works!","Here's the Message body",attachment_file="test_image.png"))
     print("\nTesting album list retrieval...")
     albums = gservice.get_user_albums()
     for i, album in enumerate(albums):
